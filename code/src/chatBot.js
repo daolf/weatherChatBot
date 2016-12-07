@@ -52,5 +52,5 @@ var botFactory = ():Object => {
 
 module.exports = {
     botFactory: botFactory,
-    firstEntityValue: firstEntityValue
+    firstEntityValue: firstEntityValue,
 }
