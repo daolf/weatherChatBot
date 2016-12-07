@@ -1,0 +1,11 @@
+{
+  "name": "weatherChatBot",
+  "devDependencies": {
+    "flow-bin": "^0.36.0",
+    "mocha": "^3.2.0",
+    "semistandard": "*"
+  },
+  "scripts": {
+    "test": "mocha"
+  }
+}
