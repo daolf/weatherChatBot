@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+  <script>
+    var socket = io.connect('localhost:3000');
+
+    var insertResponse = function(msg) {
+      var div = document.createElement("div");
+      var textNode = document.createTextNode(msg);
+      div.className = " msg msg__server";
+      div.appendChild(textNode);
+      document.getElementById("history").appendChild(div)
+      document.getElementById("userText").value = "";
+    }
+
+    var insertMessage = function(msg) {
+      var div = document.createElement("div");
+      var textNode = document.createTextNode(document.getElementById("userText").value);
+      div.className = " msg msg__client";
+      div.appendChild(textNode);
+      document.getElementById("history").appendChild(div)
+    }
+
+    socket.on('message', function(data) {
+      insertResponse(data.msg)
+    })
+
+  </script>
+  <style>
+    .chat {
+      position: relative;
+      height: 400px;
+      width: 400px;
+      margin: 0 auto;
+    }
+
+    form {
+      position: relative;
+      float: right;
+      bottom: 0;
+      border-radius: 1em;
+      padding: 0.5em 1em;
+      background: white;
+      max-width: 75%;
+      clear:both;
+    }
+
+    input {
+      border-radius: 1em;
+      padding: 0.5em 1em;
+      background: #e5e5ea;
+      border: 1px solid grey;
+    }
+
+    body {
+      background: white;
+      font: 14px "Helvetica Neue", Helvetica, Arial, sans-serif;
+    }
+
+    .msg {
+      margin: 0 0 0.5em;
+      border-radius: 1em;
+      padding: 0.5em 1em;
+      background: #1289fe;
+      max-width: 75%;
+      clear: both;
+      position: relative;
+    }
+
+    .msg__client {
+      float: right;
+      background-color: #1289fe;
+      color: white;
+    }
+
+    .msg__server {
+      float: left;
+      background-color: #e5e5ea;
+    }
+
+  </style>
+</head>
+<body>
+  <div class="chat">
+    <div id="history"></div>
+    <form method="post" action="/">
+      <input id="userText" type="text" name="text">
+      <input type="submit" value="Send !" onclick="insertMessage()">
+    </form>
+  </div>
+</body>
+</html>
