@@ -1,52 +1,37 @@
-// @flow
-'use strict';
+var express = require('express');
+var path = require('path');
+var app = express();
+var bodyParser = require('body-parser');
+var botClient = require('./chatBot.js')();
 
-var Wit = require('node-wit').Wit;
-var interactive = require('node-wit').interactive;
-var getWeather = require('../src/weatherRetriever.js').getWeather;
+app.use(bodyParser.urlencoded());
+app.use(bodyParser.json());
 
-const accessToken = (() => {
-  return process.env.WIT_ACCESS_TOKEN;
-})();
+app.get('/', function (req, res) {
+  res.sendFile(path.join(__dirname, '../../public/index.html'));
+});
 
-// Quickstart example
-// See https://wit.ai/ar7hur/quickstart
-
-const firstEntityValue = (entities, entity) => {
-  const val = entities && entities[entity] &&
-    Array.isArray(entities[entity]) &&
-    entities[entity].length > 0 &&
-    entities[entity][0].value
-  ;
-  if (!val) {
-    return null;
-  }
-  return typeof val === 'object' ? val.value : val;
-};
-
-const actions = {
-  send (request, response) {
-    console.log('sending...', JSON.stringify(response));
-  },
-  getForecast ({context, entities}) {
-    var location = firstEntityValue(entities, 'location');
-    if (location) {
-      return getWeather(location).then((info) => {
-        var context = {
-          forecast: info
-        };
-        console.log(context.forecast);
-        return context;
-      }).catch((err) => {
-        console.log(err);
-      });
+app.post('/', function (req, res) {
+  var text = req.body.text;
+  var context = {};
+  var msg = '';
+  botClient.runActions('id', text, context).then((data) => {
+    // The following logic is already in the botClient
+    // I did not manage to reuse it from the API.
+    if (data.forecast) {
+      msg = `The weather will be ${data.forecast}`;
+      context = {};
+    } else if (data.missingLocation) {
+      msg = `Where ?`;
     } else {
-      context.missingLocation = true;
-      delete context.forecast;
-      return context;
+      msg = 'I did not understand';
     }
-  }
-};
+    io.sockets.emit('message', { msg });
+  }).catch(console.error);
+});
 
-const client = new Wit({accessToken, actions});
-interactive(client);
+var server = app.listen(3000, function () {
+  console.log('Example app listening on port 3000!');
+});
+
+var io = require('socket.io')(server);
