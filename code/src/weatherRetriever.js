@@ -9,7 +9,7 @@ var getWeather = (location: string) :Object => {
       throw new Error('Bad response from server');
     }
     return response.json();
-  });
+  }).then((json) => json.weather[0].description);
 };
 
 module.exports = {

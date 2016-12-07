@@ -33,7 +33,7 @@ const actions = {
     if (location) {
       return getWeather(location).then((info) => {
         var context = {
-          forecast: info.weather[0].description
+          forecast: info
         };
         console.log(context.forecast);
         return context;
