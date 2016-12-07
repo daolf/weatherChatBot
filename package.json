@@ -1,11 +1,17 @@
 {
   "name": "weatherChatBot",
   "devDependencies": {
+    "babel-plugin-transform-flow-strip-types": "^6.18.0",
     "flow-bin": "^0.36.0",
     "mocha": "^3.2.0",
     "semistandard": "*"
   },
   "scripts": {
-    "test": "mocha"
+    "run": "rm -rf ./build && babel ./code/ --out-dir ./build && node ./build/src/main.js",
+    "test": "rm -rf ./build && babel ./code/ --out-dir ./build && mocha ./build/test/"
+  },
+  "dependencies": {
+    "node-fetch": "^1.6.3",
+    "node-wit": "^4.2.0"
   }
 }
