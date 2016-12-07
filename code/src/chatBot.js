@@ -10,7 +10,6 @@ const accessToken = (() => {
 
 // Quickstart example
 // See https://wit.ai/ar7hur/quickstart
-
 const firstEntityValue = (entities: Object, entity: string): string => {
   const val = entities && entities[entity] &&
     Array.isArray(entities[entity]) &&
@@ -51,4 +50,7 @@ var botFactory = ():Object => {
   return client;
 };
 
-module.exports = botFactory;
+module.exports = {
+    botFactory: botFactory,
+    firstEntityValue: firstEntityValue
+}

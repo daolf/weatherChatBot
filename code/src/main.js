@@ -2,7 +2,7 @@ var express = require('express');
 var path = require('path');
 var app = express();
 var bodyParser = require('body-parser');
-var botClient = require('./chatBot.js')();
+var botClient = require('./chatBot.js').botFactory();
 
 app.use(bodyParser.urlencoded());
 app.use(bodyParser.json());
