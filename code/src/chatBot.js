@@ -11,14 +11,14 @@ const accessToken = (() => {
 // Quickstart example
 // See https://wit.ai/ar7hur/quickstart
 
-const firstEntityValue = (entities, entity) => {
+const firstEntityValue = (entities: Object, entity: string): string => {
   const val = entities && entities[entity] &&
     Array.isArray(entities[entity]) &&
     entities[entity].length > 0 &&
     entities[entity][0].value
   ;
   if (!val) {
-    return null;
+    return "";
   }
   return typeof val === 'object' ? val.value : val;
 };
@@ -34,10 +34,8 @@ const actions = {
         var context = {
           forecast: info
         };
-        console.log(context.forecast);
         return context;
       }).catch((err) => {
-        console.log(err);
       });
     } else {
       context.missingLocation = true;
@@ -49,7 +47,7 @@ const actions = {
 
 const client = new Wit({accessToken, actions});
 
-var botFactory = () => {
+var botFactory = ():Object => {
   return client;
 };
 
