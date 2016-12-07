@@ -4,11 +4,12 @@
     "babel-plugin-transform-flow-strip-types": "^6.18.0",
     "flow-bin": "^0.36.0",
     "mocha": "^3.2.0",
+    "nyc": "^10.0.0",
     "semistandard": "*"
   },
   "scripts": {
     "run": "rm -rf ./build && babel ./code/ --out-dir ./build && node ./build/src/main.js",
-    "test": "rm -rf ./build && babel ./code/ --out-dir ./build && mocha ./build/test/"
+    "test": "rm -rf ./build && babel ./code/ --out-dir ./build && nyc mocha ./build/test/"
   },
   "dependencies": {
     "body-parser": "^1.15.2",
